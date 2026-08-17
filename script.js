@@ -8,16 +8,29 @@ const filters=[...document.querySelectorAll('.filter')],skills=[...document.quer
 const data={genomics:{k:'RESEARCH AREA 01',t:'Cassava Genomics',c:'I use targeted-gene curation and genome-scale analysis to examine genetic diversity in cassava, including sequence variants, haplotypes, and structural variation across starch-related genes.',tags:['Pangenomics','Gene curation','Haplotypes','SNPs & indels','Structural variants']},starch:{k:'RESEARCH AREA 02',t:'Starch Phosphorylation',c:'My research focuses on genetic and biochemical variation in pathways that shape cassava starch properties, particularly phosphorylation and the distribution of glucose-3-phosphate and glucose-6-phosphate.',tags:['GWD/PWD','G3P','G6P','Total phosphate','Starch quality']},phenotyping:{k:'RESEARCH AREA 03',t:'Integrated Phenotyping',c:'I pair genomic analyses with laboratory measurements so sequence variation can be interpreted alongside experimentally measured starch traits and spectral or microscopic data.',tags:['FT-NIR','HPAEC-PAD','Enzymatic assays','Starch isolation','SEM']}};
 const d=document.getElementById('research-dialog');document.querySelectorAll('[data-modal]').forEach(b=>b.addEventListener('click',()=>{const x=data[b.dataset.modal];if(!x||!d)return;document.getElementById('dialog-kicker').textContent=x.k;document.getElementById('dialog-title').textContent=x.t;document.getElementById('dialog-copy').textContent=x.c;document.getElementById('dialog-tags').innerHTML=x.tags.map(v=>`<span>${v}</span>`).join('');d.showModal()}));d?.querySelector('.close')?.addEventListener('click',()=>d.close());d?.addEventListener('click',e=>{const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()});document.getElementById('year').textContent=new Date().getFullYear();
 
-/* Institutional logo fixes: use official-hosted marks and resilient fallbacks. */
+/* Institution marks: corrected sources with safe fallbacks. */
 const logoStyle=document.createElement('style');logoStyle.textContent=`
-.orglogo.cbc{position:relative;padding:6px;overflow:visible}
-.orglogo.cbc::after{content:'CBC';position:absolute;right:-7px;bottom:-7px;background:#08783e;color:#fff;border:2px solid #fff;border-radius:8px;padding:2px 5px;font-size:.55rem;font-weight:900;letter-spacing:.05em;box-shadow:0 3px 10px rgba(0,0,0,.12)}
-.logo-fallback{font-weight:900;color:#08783e;font-size:1.05rem;letter-spacing:.04em;text-align:center;line-height:1.05}
-.logo-fallback small{display:block;font-size:.48rem;color:#64736c;margin-top:3px;letter-spacing:0}
+.logo-fallback{font-weight:900;color:#08783e;font-size:1rem;letter-spacing:.03em;text-align:center;line-height:1.05}
+.logo-fallback small{display:block;font-size:.46rem;color:#64736c;margin-top:3px;letter-spacing:0}
 `;document.head.appendChild(logoStyle);
 
+/* Exact KU mark currently used on the Thai Wikipedia article supplied by the site owner; its Commons record cites the official KU Corporate Identity Guidelines. */
 const kuImg=[...document.querySelectorAll('.edulogo img')].find(img=>img.alt==='Kasetsart University logo');
-if(kuImg){kuImg.referrerPolicy='no-referrer';kuImg.src='https://iad.intaff.ku.ac.th/portal/iad/images/ku-logo.png';kuImg.onerror=()=>{const box=kuImg.parentElement;if(box){box.innerHTML='<div class="logo-fallback">KU<small>Kasetsart University</small></div>'}}}
+if(kuImg){
+  kuImg.referrerPolicy='no-referrer';
+  kuImg.src='https://upload.wikimedia.org/wikipedia/commons/4/43/Kasetsart_Sublogo-TH.svg';
+  kuImg.onerror=()=>{const box=kuImg.parentElement;if(box){box.innerHTML='<div class="logo-fallback">KU<small>Kasetsart University</small></div>'}}
+}
 
+/* DA-CBC: use the icon associated with the official dacbc.philrice.gov.ph site rather than a generic DA regional logo. */
 const cbcArticle=[...document.querySelectorAll('.timeline')].find(a=>a.querySelector('.institution')?.textContent.includes('Crop Biotechnology Center'));
-if(cbcArticle){const box=cbcArticle.querySelector('.orglogo');const img=box?.querySelector('img');if(box)box.classList.add('cbc');if(img){img.referrerPolicy='no-referrer';img.src='https://bicol.da.gov.ph/wp-content/uploads/2018/06/DA-Logo.png';img.alt='Department of Agriculture / Crop Biotechnology Center';img.onerror=()=>{if(box)box.innerHTML='<div class="logo-fallback">DA<small>Crop Biotechnology Center</small></div>'}}}
+if(cbcArticle){
+  const box=cbcArticle.querySelector('.orglogo');
+  const img=box?.querySelector('img');
+  if(img){
+    img.referrerPolicy='no-referrer';
+    img.src='https://www.google.com/s2/favicons?domain=dacbc.philrice.gov.ph&sz=256';
+    img.alt='DA-Crop Biotechnology Center logo';
+    img.onerror=()=>{if(box)box.innerHTML='<div class="logo-fallback">DA-CBC<small>Crop Biotechnology Center</small></div>'}
+  }
+}
