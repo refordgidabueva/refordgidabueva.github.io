@@ -1,0 +1,106 @@
+/* Persistent UI fixes — logo consistency and interaction-safe states */
+
+/* Keep every organisation mark in the same visual frame as the VSU logo. */
+.orglogo,
+.edulogo {
+  background: #fff !important;
+  border-color: var(--line) !important;
+  overflow: hidden;
+}
+
+.orglogo {
+  width: 68px !important;
+  height: 68px !important;
+  padding: 8px !important;
+}
+
+.orglogo img {
+  width: 52px !important;
+  height: 52px !important;
+  max-width: 52px !important;
+  max-height: 52px !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  display: block !important;
+  margin: auto !important;
+  transform: none !important;
+}
+
+/* The long CVIF/CBC marks need a little more usable width while staying inside
+   the exact same 68 × 68 logo frame. */
+.orglogo img[alt*="Central Visayan Institute Foundation"],
+.orglogo img[alt*="Crop Biotechnology Center"],
+.orglogo img[alt*="PhilRice"] {
+  width: 54px !important;
+  height: 54px !important;
+  max-width: 54px !important;
+  max-height: 54px !important;
+}
+
+/* KU logo: explicitly render it on a clean white card, regardless of the
+   transparency of the source artwork. */
+.edulogo:has(img[alt="Kasetsart University logo"]) {
+  background: #fff !important;
+  box-shadow: inset 0 0 0 1px rgba(8,120,62,.06);
+}
+
+.edulogo img[alt="Kasetsart University logo"] {
+  background: #fff !important;
+  border-radius: 10px;
+  padding: 4px;
+}
+
+/* Clear interactive feedback on every visit / navigation state. */
+.tab,
+.expand,
+.text-btn,
+.filter,
+.research-card,
+.menu,
+.site-header nav a,
+.btn,
+.profile-links a,
+.contact-links a {
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease,
+              color .18s ease, border-color .18s ease, opacity .18s ease !important;
+}
+
+.tab:hover,
+.expand:hover,
+.text-btn:hover,
+.filter:hover,
+.research-card:hover,
+.btn:hover,
+.profile-links a:hover,
+.contact-links a:hover {
+  transform: translateY(-1px);
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(8,120,62,.28);
+  outline-offset: 3px;
+}
+
+/* Never leave reveal content invisible after a BFCache restore or soft reload. */
+html.ui-ready .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 680px) {
+  .orglogo {
+    width: 55px !important;
+    height: 55px !important;
+    padding: 6px !important;
+  }
+  .orglogo img,
+  .orglogo img[alt*="Central Visayan Institute Foundation"],
+  .orglogo img[alt*="Crop Biotechnology Center"],
+  .orglogo img[alt*="PhilRice"] {
+    width: 43px !important;
+    height: 43px !important;
+    max-width: 43px !important;
+    max-height: 43px !important;
+  }
+}
